@@ -1,5 +1,19 @@
-const TELEMETRY_URL = 'https://add-skill.vercel.sh/t';
-const AUDIT_URL = 'https://add-skill.vercel.sh/audit';
+/**
+ * No-op telemetry stub for the @juiceboxcreative/skills fork.
+ *
+ * The upstream vercel-labs/skills CLI POSTs install/remove/update/find/sync
+ * events plus security-audit lookups to add-skill.vercel.sh. That telemetry
+ * also feeds the public skills.sh leaderboard, which would auto-publish our
+ * private agency repo URL + skill names every time a staff member installed.
+ *
+ * This fork preserves the original API surface so call sites in cli.ts,
+ * add.ts, find.ts, remove.ts, and detect-agent.ts continue to compile and
+ * run, but every entry point is a no-op. No network requests are made; no
+ * data leaves the user's machine.
+ *
+ * Keep this file the single point of difference vs. upstream so periodic
+ * `git merge upstream/main` stays cheap.
+ */
 
 interface InstallTelemetryData {
   event: 'install';
@@ -7,13 +21,7 @@ interface InstallTelemetryData {
   skills: string;
   agents: string;
   global?: '1';
-  skillFiles?: string; // JSON stringified { skillName: relativePath }
-  /**
-   * Source type for different hosts:
-   * - 'github': GitHub repository (default, uses raw.githubusercontent.com)
-   * - 'raw': Direct URL to SKILL.md (generic raw URL)
-   * - Provider IDs like 'mintlify', 'huggingface', etc.
-   */
+  skillFiles?: string;
   sourceType?: string;
 }
 
@@ -55,40 +63,6 @@ type TelemetryData =
   | FindTelemetryData
   | SyncTelemetryData;
 
-let cliVersion: string | null = null;
-let detectedAgentName: string | null = null;
-
-/**
- * Set the detected AI agent name for telemetry tracking.
- * Called once during agent detection, then included in all telemetry events.
- */
-export function setDetectedAgent(agentName: string | null): void {
-  detectedAgentName = agentName;
-}
-
-function isCI(): boolean {
-  return !!(
-    process.env.CI ||
-    process.env.GITHUB_ACTIONS ||
-    process.env.GITLAB_CI ||
-    process.env.CIRCLECI ||
-    process.env.TRAVIS ||
-    process.env.BUILDKITE ||
-    process.env.JENKINS_URL ||
-    process.env.TEAMCITY_VERSION
-  );
-}
-
-function isEnabled(): boolean {
-  return !process.env.DISABLE_TELEMETRY && !process.env.DO_NOT_TRACK;
-}
-
-export function setVersion(version: string): void {
-  cliVersion = version;
-}
-
-// ─── Security audit data ───
-
 export interface PartnerAudit {
   risk: 'safe' | 'low' | 'medium' | 'high' | 'critical' | 'unknown';
   alerts?: number;
@@ -99,88 +73,26 @@ export interface PartnerAudit {
 export type SkillAuditData = Record<string, PartnerAudit>;
 export type AuditResponse = Record<string, SkillAuditData>;
 
-/**
- * Fetch security audit results for skills from the audit API.
- * Returns null on any error or timeout — never blocks installation.
- */
+export function setDetectedAgent(_agentName: string | null): void {
+  // no-op
+}
+
+export function setVersion(_version: string): void {
+  // no-op
+}
+
+export function track(_data: TelemetryData): void {
+  // no-op
+}
+
+export async function flushTelemetry(_timeoutMs: number = 5000): Promise<void> {
+  // no-op
+}
+
 export async function fetchAuditData(
-  source: string,
-  skillSlugs: string[],
-  timeoutMs = 3000
+  _source: string,
+  _skillSlugs: string[],
+  _timeoutMs: number = 3000
 ): Promise<AuditResponse | null> {
-  if (skillSlugs.length === 0) return null;
-
-  try {
-    const params = new URLSearchParams({
-      source,
-      skills: skillSlugs.join(','),
-    });
-
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), timeoutMs);
-
-    const response = await fetch(`${AUDIT_URL}?${params.toString()}`, {
-      signal: controller.signal,
-    });
-    clearTimeout(timeout);
-
-    if (!response.ok) return null;
-    return (await response.json()) as AuditResponse;
-  } catch {
-    return null;
-  }
-}
-
-// Pending telemetry promises — awaited before CLI exit so we don't lose data,
-// but never block the main workflow.
-const pendingTelemetry: Promise<void>[] = [];
-
-export function track(data: TelemetryData): void {
-  if (!isEnabled()) return;
-
-  try {
-    const params = new URLSearchParams();
-
-    // Add version
-    if (cliVersion) {
-      params.set('v', cliVersion);
-    }
-
-    // Add CI flag if running in CI
-    if (isCI()) {
-      params.set('ci', '1');
-    }
-
-    // Add detected AI agent name
-    if (detectedAgentName) {
-      params.set('agent', detectedAgentName);
-    }
-
-    // Add event data
-    for (const [key, value] of Object.entries(data)) {
-      if (value !== undefined && value !== null) {
-        params.set(key, String(value));
-      }
-    }
-
-    // Fire and forget during the workflow, but track the promise so
-    // flushTelemetry() can await it before the process exits.
-    const p = fetch(`${TELEMETRY_URL}?${params.toString()}`)
-      .catch(() => {})
-      .then(() => {});
-    pendingTelemetry.push(p);
-  } catch {
-    // Silently fail - telemetry should never break the CLI
-  }
-}
-
-/**
- * Wait for all in-flight telemetry requests to settle.
- * Called once at CLI exit so the process doesn't hang on open sockets
- * but also doesn't drop data by exiting too early.
- */
-export async function flushTelemetry(timeoutMs = 5000): Promise<void> {
-  if (pendingTelemetry.length === 0) return;
-  const timeout = new Promise<void>((resolve) => setTimeout(resolve, timeoutMs));
-  await Promise.race([Promise.all(pendingTelemetry), timeout]);
+  return null;
 }

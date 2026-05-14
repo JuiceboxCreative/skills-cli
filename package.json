@@ -1,7 +1,7 @@
 {
-  "name": "skills",
-  "version": "1.5.6",
-  "description": "The open agent skills ecosystem",
+  "name": "@juiceboxcreative/skills",
+  "version": "0.1.0",
+  "description": "Internal Juicebox Creative fork of vercel-labs/skills with telemetry and security-audit endpoints removed. Installs SKILL.md files from a private agency repo into Claude Code, Codex, Cursor, and 48 other agents.",
   "type": "module",
   "bin": {
     "skills": "./bin/cli.mjs",
@@ -94,14 +94,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vercel-labs/skills.git"
+    "url": "git+https://github.com/JuiceboxCreative/skills-cli.git"
   },
-  "homepage": "https://github.com/vercel-labs/skills#readme",
+  "homepage": "https://github.com/JuiceboxCreative/skills-cli#readme",
   "bugs": {
-    "url": "https://github.com/vercel-labs/skills/issues"
+    "url": "https://github.com/JuiceboxCreative/skills-cli/issues"
   },
-  "author": "",
+  "author": "Juicebox Creative",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@clack/prompts": "^0.11.0",
     "@types/bun": "latest",

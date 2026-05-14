@@ -1,3 +1,21 @@
+# @juiceboxcreative/skills
+
+> **Internal Juicebox Creative fork of [vercel-labs/skills](https://github.com/vercel-labs/skills).**
+>
+> Identical to upstream except `src/telemetry.ts` is replaced with a no-op stub. Removes phone-home to `add-skill.vercel.sh/t` (install/remove/update/find events) and `add-skill.vercel.sh/audit` (security-audit lookup). Stops auto-publication of agency repo URLs and skill names to the public skills.sh leaderboard.
+>
+> No proprietary changes. Pull upstream periodically with `git fetch upstream && git merge upstream/main` — only `src/telemetry.ts`, `package.json`, and this notice should conflict.
+>
+> Install our skills with:
+>
+> ```bash
+> npx @juiceboxcreative/skills add JuiceboxCreative/skills --skill <slug> -g
+> ```
+>
+> Original upstream README follows.
+
+---
+
 # skills
 
 The CLI for the open agent skills ecosystem.
