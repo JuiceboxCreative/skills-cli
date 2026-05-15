@@ -11,7 +11,7 @@ The Juicebox install CLI for [`JuiceboxCreative/skills`](https://github.com/Juic
 The canonical install command for any Juicebox skill:
 
 ```bash
-npx @juiceboxcreative/skills add JuiceboxCreative/skills --skill <slug> -g
+npx @juiceboxcreative/skills@latest add JuiceboxCreative/skills --skill <slug> -g
 ```
 
 `-g` writes the skill to your **global** agent config (e.g. `~/.claude/skills/<slug>/`). Drop the `-g` to install into the current project at `./.claude/skills/<slug>/`.
@@ -20,29 +20,29 @@ npx @juiceboxcreative/skills add JuiceboxCreative/skills --skill <slug> -g
 
 ```bash
 # Install one skill globally; the CLI auto-detects which agents you have
-npx @juiceboxcreative/skills add JuiceboxCreative/skills --skill seo-audit -g
+npx @juiceboxcreative/skills@latest add JuiceboxCreative/skills --skill seo-audit -g
 
 # Install for Cursor + Codex instead of Claude Code
-npx @juiceboxcreative/skills add JuiceboxCreative/skills --skill seo-audit -g -a cursor -a codex
+npx @juiceboxcreative/skills@latest add JuiceboxCreative/skills --skill seo-audit -g -a cursor -a codex
 
 # List every skill in the repo without installing
-npx @juiceboxcreative/skills add JuiceboxCreative/skills --list
+npx @juiceboxcreative/skills@latest add JuiceboxCreative/skills --list
 
 # Install several skills at once
-npx @juiceboxcreative/skills add JuiceboxCreative/skills \
+npx @juiceboxcreative/skills@latest add JuiceboxCreative/skills \
   --skill meeting-agenda \
   --skill jira-ticket-standard \
   --skill change-request \
   -g
 
 # Install absolutely every skill in the repo (rare; usually overkill)
-npx @juiceboxcreative/skills add JuiceboxCreative/skills --skill '*' -g
+npx @juiceboxcreative/skills@latest add JuiceboxCreative/skills --skill '*' -g
 
 # Non-interactive (CI-friendly): skip every confirmation prompt
-npx @juiceboxcreative/skills add JuiceboxCreative/skills --skill seo-audit -g -a claude-code -y
+npx @juiceboxcreative/skills@latest add JuiceboxCreative/skills --skill seo-audit -g -a claude-code -y
 ```
 
-The CLI also accepts other source formats (GitHub URLs, GitLab URLs, raw git URLs, local paths) — see `npx @juiceboxcreative/skills add --help` for the full list.
+The CLI also accepts other source formats (GitHub URLs, GitLab URLs, raw git URLs, local paths) — see `npx @juiceboxcreative/skills@latest add --help` for the full list.
 
 ## Install scope
 
@@ -57,25 +57,25 @@ By default the CLI walks every agent it finds installed locally (Claude Code, Cu
 
 ```bash
 # Just Claude Code
-npx @juiceboxcreative/skills add JuiceboxCreative/skills --skill seo-audit -g -a claude-code
+npx @juiceboxcreative/skills@latest add JuiceboxCreative/skills --skill seo-audit -g -a claude-code
 
 # Cursor + Codex
-npx @juiceboxcreative/skills add JuiceboxCreative/skills --skill seo-audit -g -a cursor -a codex
+npx @juiceboxcreative/skills@latest add JuiceboxCreative/skills --skill seo-audit -g -a cursor -a codex
 
 # Every supported agent (rarely needed)
-npx @juiceboxcreative/skills add JuiceboxCreative/skills --skill seo-audit -g -a '*'
+npx @juiceboxcreative/skills@latest add JuiceboxCreative/skills --skill seo-audit -g -a '*'
 ```
 
 ## Common commands
 
 | Command                                                | What it does                                  |
 | ------------------------------------------------------ | --------------------------------------------- |
-| `npx @juiceboxcreative/skills add <source>`            | Install one or more skills                    |
-| `npx @juiceboxcreative/skills list`                    | List installed skills (alias: `ls`)           |
-| `npx @juiceboxcreative/skills update [slug]`           | Update installed skills to the latest version |
-| `npx @juiceboxcreative/skills remove [slug]`           | Remove installed skills (alias: `rm`)         |
-| `npx @juiceboxcreative/skills find [query]`            | Search installable skills interactively       |
-| `npx @juiceboxcreative/skills init [name]`             | Scaffold a new local `SKILL.md` template      |
+| `npx @juiceboxcreative/skills@latest add <source>`            | Install one or more skills                    |
+| `npx @juiceboxcreative/skills@latest list`                    | List installed skills (alias: `ls`)           |
+| `npx @juiceboxcreative/skills@latest update [slug]`           | Update installed skills to the latest version |
+| `npx @juiceboxcreative/skills@latest remove [slug]`           | Remove installed skills (alias: `rm`)         |
+| `npx @juiceboxcreative/skills@latest find [query]`            | Search installable skills interactively       |
+| `npx @juiceboxcreative/skills@latest init [name]`             | Scaffold a new local `SKILL.md` template      |
 
 Every command accepts `--help` for the full option list.
 
@@ -83,26 +83,26 @@ Every command accepts `--help` for the full option list.
 
 ```bash
 # Interactive — picks the right scope and confirms each update
-npx @juiceboxcreative/skills update
+npx @juiceboxcreative/skills@latest update
 
 # Update one skill by name
-npx @juiceboxcreative/skills update seo-audit
+npx @juiceboxcreative/skills@latest update seo-audit
 
 # Update all global skills, no prompts
-npx @juiceboxcreative/skills update -g -y
+npx @juiceboxcreative/skills@latest update -g -y
 ```
 
 ### Remove a skill
 
 ```bash
 # Remove from global scope
-npx @juiceboxcreative/skills remove seo-audit -g
+npx @juiceboxcreative/skills@latest remove seo-audit -g
 
 # Remove from a specific agent only
-npx @juiceboxcreative/skills remove seo-audit -a cursor
+npx @juiceboxcreative/skills@latest remove seo-audit -a cursor
 
 # Wipe everything (asks for confirmation)
-npx @juiceboxcreative/skills remove --all
+npx @juiceboxcreative/skills@latest remove --all
 ```
 
 ## Add a new skill to the Juicebox library
