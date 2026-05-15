@@ -1039,6 +1039,13 @@ export async function runAdd(args: string[], options: AddOptions = {}): Promise<
     } else if (parsed.type === 'github' && !options.fullDepth) {
       // Try blob-based fast install for GitHub sources
       // Only enabled for allowlisted orgs; skip for --full-depth
+      //
+      // 'juiceboxcreative' is intentionally NOT in this list. The blob path POSTs
+      // to skills.sh (Vercel-hosted public marketplace) and only resolves for orgs
+      // Vercel indexes upstream. Our content repo is private — adding us here
+      // would (a) leak repo/skill names to skills.sh on every install before the
+      // inevitable 404, defeating the telemetry-strip purpose of this fork, and
+      // (b) add round-trip latency with no fast-path win. Git clone is correct.
       const BLOB_ALLOWED_OWNERS = ['vercel', 'vercel-labs', 'heygen-com'];
       const ownerRepo = getOwnerRepo(parsed);
       const owner = ownerRepo?.split('/')[0]?.toLowerCase();
