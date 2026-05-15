@@ -395,12 +395,10 @@ async function selectAgentsInteractive(options: {
       (a) => otherAgents.includes(a as AgentType) && !universalAgents.includes(a as AgentType)
     ) as AgentType[];
   } else {
-    // First run for this user: pre-select any non-universal agent already on disk.
-    // Reuses each agent's detectInstalled() so Claude Code, Cursor, etc. default to selected.
-    const detections = await Promise.all(
-      otherAgents.map(async (a) => ((await agents[a].detectInstalled()) ? a : null))
-    );
-    initialSelected = detections.filter((a): a is AgentType => a !== null);
+    // First-run default mirrors promptForAgents() (sync/remove/etc):
+    // pre-select Claude Code, OpenCode, Codex when present as valid non-universal targets.
+    const defaultAgents: AgentType[] = ['claude-code', 'opencode', 'codex'];
+    initialSelected = defaultAgents.filter((a) => otherAgents.includes(a));
   }
 
   const selected = await searchMultiselect({
