@@ -1,6 +1,6 @@
 {
   "name": "@juiceboxcreative/skills",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Internal Juicebox Creative fork of vercel-labs/skills with telemetry and security-audit endpoints removed. Installs SKILL.md files from a private agency repo into Claude Code, Codex, Cursor, and 48 other agents.",
   "type": "module",
   "bin": {
